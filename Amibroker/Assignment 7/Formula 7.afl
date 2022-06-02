@@ -1,0 +1,3 @@
+Close1=Foreign("~~Rank"+Name(),"Close");
+Filter=Close1<6;
+AddColumn(Close1,"Close",1.2);
