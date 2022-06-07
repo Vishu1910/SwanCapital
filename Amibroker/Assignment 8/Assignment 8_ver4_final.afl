@@ -1,0 +1,74 @@
+afl="Assignment73";											//add 1 every time we are running a new exploration 	
+ibc = GetTradingInterface("IB");
+if(ibc.IsConnected())
+{
+	//fetching open and close of all symbols present in the watchlist
+		open1=TimeFrameGetPrice("O",inDaily,0);
+		close1=Close;
+	
+	//initialising counter variables to check for BankNifty and Nifty each
+		counter=Nz(StaticVarGet(afl+"Counter"));
+		counter1=Nz(StaticVarGet(afl+"Counter1"));
+		counter2=Nz(StaticVarGet(afl+"Counter2"));
+		count_check_bn=2;									//number of symbols we want to add for BankNifty 
+		count_check_n=2;									//number of symbols we want to add for Nifty
+	
+	//fetching close of BankNifty and getting ATM value	
+		SetForeign("BANKNIFTY-NSE-IND-INR");
+		close2=Close;
+		RestorePriceArrays();
+		price_b=round(close2/100)*100;
+		symbol1="BANKNIFTY22609"+price_b+"CE-NSE-OPT-INR";
+		diff=((close1/open1)-1)*100;
+		val=IIf(diff>0,1,0);
+		price1=val;
+		//strike_price1=Nz(StaticVarGet(afl+price_b));
+		str1=price1;
+		StaticVarSet(afl+symbol1,val);
+		
+	//adding the particular symbol to the Watchlist
+		if(Name()==symbol1 AND Nz(StaticVarGet(afl+price_b))==0 AND Nz(StaticVarGet(afl+"Counter1"))<=count_check_bn AND LastValue(Nz(StaticVarGet(afl+symbol1)))==1)
+		{
+			CategoryAddSymbol(symbol1,categoryWatchlist,3);
+			StaticVarAdd(afl+"Counter1",1);
+			StaticVarSet(afl+price_b,1);
+		}		
+		
+	//fetching close of Nifty and getting ATM value
+		SetForeign("NIFTY50-NSE-IND-INR");
+		close2=Close;
+		RestorePriceArrays();
+		price_n=round(close2/100)*100;
+		symbol2="NIFTY22609"+price_n+"CE-NSE-OPT-INR";
+		diff1=((close1/open1)-1)*100;
+		val2=IIf(diff<0,1,0);
+		price2=val2;
+		//strike_price2=Nz(StaticVarGet(afl+price_n));
+		str2=price2;
+		StaticVarSet(afl+symbol2,val2);
+		
+	//adding the particular symbol to the watchlist
+		if(Name()==symbol2 AND Nz(StaticVarGet(afl+price_n))==0 AND Nz(StaticVarGet(afl+"Counter2"))<=count_check_n AND LastValue(Nz(StaticVarGet(afl+symbol2)))==1)
+		{
+			CategoryAddSymbol(symbol2,categoryWatchlist,3);
+			StaticVarAdd(afl+"Counter2",1);
+			StaticVarSet(afl+price_n,1);
+		}		
+
+}
+
+Filter=1;
+AddColumn(open1,"Today's Open");
+AddColumn(close1,"Close at every Interval");
+/*
+AddColumn(opt1_close,"Close");
+AddColumn(opt1_round,"ATM Close");
+
+//AddColumn(price,"Rounded price");*/
+AddTextColumn(Name(),"Name");
+AddtextColumn(symbol1,"Converting price to string");
+AddtextColumn(symbol2,"Converting price to string");
+AddColumn(val,"Value if difference less than -10");
+AddColumn(val2,"Value if difference less than -10");
+//AddColumn(counter,"Counter");	
+		

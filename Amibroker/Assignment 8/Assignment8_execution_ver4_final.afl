@@ -1,0 +1,63 @@
+afl="Executee139";
+ibc = GetTradingInterface("IB");
+
+if(ibc.IsConnected())
+{
+	id=Nz(StaticVarGet(afl+Name()+"OrderID")); 				//fetch order ID
+	chk=Nz(StaticVarGet(afl+"Counter")); 					//initialise counter variable
+	mod_chk=Nz(StaticVarGet(afl+Name()+"counter1"));		//counter for checking how many times modification happens
+	time_check=Nz(StaticVarGet(afl+Name()+"Time")); 		//get order placed time
+	one_minute_check=Nz(StaticVarGet(afl+Name()+"Time1"));  //get order placed time + 1 minute
+	//two_minute_check=Nz(StaticVarGet(afl+"Time2")); 		//get modified order time + 1 minute
+	current_time=(LastValue(Now(4))); 						//fetches current time	
+	z=0;													//initialising a variable for modification
+	no_of_mod=2;											//the number of times we want modification to happen	
+	no_of_orders=2;											//number of orders we want to place
+	
+	//One Minute Time Calculation
+	
+		time=LastValue(Now(4));
+		current=LastValue(DateNum());
+		convert=DateTimeConvert(2,current,time);
+		after=10;
+		convert2=DateTimeAdd(convert,after,in1Second);
+		final=DateTimeConvert(1,convert2);
+		
+	//Code to Modify Order
+	//Checking if current time is greater than equal to Order Placed Time + 1 minute
+	
+	if(current_time>=Nz(StaticVarGet(afl+Name()+"Time1")) AND Nz(StaticVarGet(afl+Name()+"OrderPlaced"))==1 AND Nz(StaticVarGet(afl+Name()+"counter1"))<no_of_mod AND ibc.GetStatus(id)!="Filled")
+	{ 
+		z=LastValue(Close*1.01);
+		qty=IIf(StrLeft(Name(),5)=="NIFTY",50,25);
+		y=ibc.ModifyOrder(id,Name(),"BUY",qty,"LMT",z,0,"GTC",False);
+		StaticVarAdd(afl+Name()+"counter1",1);
+		StaticVarSet(afl+Name()+"Time1",final);
+	}
+	
+	//Code to Place order 
+	
+	if(chk<=no_of_orders AND Nz(StaticVarGet(afl+Name()+"OrderPlaced"))==0)
+	{
+		qty=IIf(StrLeft(Name(),5)=="NIFTY",50,25);
+		z = LastValue(Close);
+		x= ibc.PlaceOrder(Name(),"BUY",qty,"LMT",z,0,"DAY",False);
+		StaticVarSet(afl+Name()+"OrderPlaced",1);
+		StaticVarAdd(afl+"Counter",1);
+		StaticVarSet(afl+Name()+"OrderID",StrToNum(x));
+		//StaticVarSet(afl+Name()+"counter1",1);
+		
+		StaticVarSet(afl+Name()+"Time",time);
+		StaticVarSet(afl+Name()+"Time1",final);
+		
+	}
+}
+
+Filter=1;
+AddColumn(chk,"Counter");
+//AddtextColumn(Now(),"Current time");
+AddColumn(id,"Order ID");
+AddColumn(mod_chk,"Modify check counter");
+AddColumn(current_time,"Current time");
+AddColumn(time_check,"Order placed time");
+AddColumn(one_minute_check,"Order placed time + 1 minute");
