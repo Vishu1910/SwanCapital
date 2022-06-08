@@ -1,0 +1,4 @@
+After we download both the files for .NETforamibroker and the zerodha plugin, we extract them to a specific place.
+We run the .NET on a Standard Edition (works for 30 days) when we are setting it up.
+Once we are done extracting, we open the project "AmiBrokerPlugInCS1" on VisualBasic2015 and build it.
+The build should happen successfully without any errors. Once this is done, we open Amibroker and check for if the Zerodha Plugin is successful.
