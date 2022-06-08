@@ -1,0 +1,29 @@
+apikey="";
+apisecret = "";
+/// https://kite.trade/connect/login?api_key="YOUR APIKEY"=3	 																			//URL through which we fetch the request token
+
+// after running the above URL, we get our request token
+request_token="";
+
+//Now, we get our access token using the Login function built through C#
+
+//x=Login(request_token,apikey,apisecret);		
+//x = StaticVarGetText("access_token");																										//fetches the access token that we had previously set 		
+//access_token = StrReplace(StrReplace(StrExtract(x,-6),StrLeft(StrExtract(x,-6),16),""),StrRight(StrReplace(StrExtract(x,-6),StrLeft(StrExtract(x,-6),16),""),1),"");
+
+//Functions that we use
+
+//x=Placezerodhaorder(apikey,access_token,"NSE","PCJEWELLER","BUY","1","20","CNC","LIMIT","DAY","","","","","","regular","Test");			//places order taking in different parameters as input	
+//OrderID1 = StrReplace(StrReplace(x,StrLeft(x,40),""),StrRight(x,3),"");																	//fetches the order Id of the order placed 
+//Get_order = GetOrder(access_token,apikey);																								//returns the list of all orders pertaining to that particular apikey.	
+//order_by_id=GetOrdersbyId(OrderID1,access_token,apikey);																					//gives you details of a particular orderID that we wish to get 
+//cancel_id=CancelZerodhaorder(apikey,access_token,OrderID1,"regular","");																	//cancels a particular order based on the order ID that we specify and returns OrderID
+//modify_id=Modifyzerodhaorder(apikey,access_token,OrderID1,"","NSE","PCJEWELLER","Buy","1","20.5","CNC","LIMIT","Day","","","regular");	//modifies a particular order based on the order ID that we specify and returns OrderId
+//x=getzerodhaholdings(apikey,access_token);																								//returns the data for all the holdings corresponding to the particular api_key
+//y=getzerodhapositions(apikey,access_token);																								//provides 	
+Filter=1;
+//AddtextColumn(x,"Status");
+//AddTextColumn(OrderID1,"OrderID");
+//AddTextColumn(order_by_id,"OrderByID"); 
+//AddTextColumn(x,"Zerodha Holdings");
+//AddTextColumn(y,"Zerodha Positions");

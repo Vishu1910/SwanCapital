@@ -1,0 +1,9 @@
+Functions to be used for Zerodha plugin : 
+1) Login(requesttoken,APIkey,APIsecret) 
+2) GetOrder(accesstoken,APIkey)
+3) GetOrdersById(orderID,accesstoken,APIkey)
+4) PlaceZerodhaOrder(APIkey,accesstoken,exchange..)
+5) CancelZerodhaOrder(requires order ID+same parameters as that of ^)
+6) ModifyZerodhaOrder(requires order ID+same parameters as that of ^)
+7) GetZerodhaHoldings(apikey,accesstoken)
+8) GetZerodhaPositions(apikey,accesstoken)
